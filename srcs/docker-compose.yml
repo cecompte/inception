@@ -1,0 +1,20 @@
+services:
+  nginx:
+    container_name: nginx
+  mariadb:
+    container_name: mariadb
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      -"3306:3306"
+    volumes:
+      -dbdata:/var/lib/mysql
+
+
+volumes:
+  db-data:

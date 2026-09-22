@@ -16,9 +16,9 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -subj "/CN=localhost"
 
 # Copy your custom config over the default
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 443
 
 # Run nginx in the foreground (required for Docker containers)
-CMD ["nginx", "-g", "daemon off;"]curl -k https://localhost:8443
+CMD ["nginx", "-g", "daemon off;"]
