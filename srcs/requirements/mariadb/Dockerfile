@@ -1,10 +1,10 @@
 FROM debian:bookworm
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get update
 RUN apt-get install -y mariadb-server
 
-#Copy in a config file
-COPY conf/my.cnf /etc/mysql/my.cnf
+# #Copy in a config file
+# COPY conf/my.cnf /etc/mysql/my.cnf
 
 #Copy in the initialization script
 COPY tools/init-db.sh /usr/local/bin/init-db.sh
@@ -19,3 +19,5 @@ EXPOSE 3306
 #   CMD mariadb -e 'SELECT @@datadir;' || exit 1
 
 ENTRYPOINT ["init-db.sh"]
+
+CMD ["mysqld_safe"]
