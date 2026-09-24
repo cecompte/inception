@@ -24,4 +24,6 @@ RUN mkdir -p /usr/src/wordpress && \
 COPY tools/conf-wp.sh /usr/local/bin/conf-wp.sh
 RUN chmod +x /usr/local/bin/conf-wp.sh
 
+EXPOSE 9000
+
 CMD ["conf-wp.sh"]

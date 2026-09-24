@@ -19,6 +19,11 @@ mariadb -u root -e "SELECT User, Host FROM mysql.user;"
 
 
 # Resources 
-wordpress installation using wp-cli : https://www.akamai.com/cloud/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/ 
+## nginx 
+- config file with ssl/tls: https://oneuptime.com/blog/post/2026-02-20-nginx-ssl-tls-configuration/view
+- nginx config file with php: https://www.servermania.com/kb/articles/setup-php-on-nginx-with-fastcgi
+
+## wordpress
+- wordpress installation using wp-cli : https://www.akamai.com/cloud/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/ 
 
 
