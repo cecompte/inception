@@ -1,26 +1,27 @@
 FROM debian:bookworm
 
-# Install php-fpm
+# Install php-fpm and utilities 9curl, sudo)
 RUN apt-get update && \
     apt-get upgrade -y && \
-	apt-get install -y php8.2-fpm php8.2-mysql mariadb-client
+	apt-get install -y \
+	php8.2-cli \
+	php8.2-fpm \
+	php8.2-mysql \
+	mariadb-client \
+	curl \
+	sudo
 
 # Install wp-cli
-RUN apt-get install -y curl && \
-	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \
 	mv wp-cli.phar /usr/local/bin/wp
 
-# Install wordpress
-RUN apt-get install -y sudo && \
-	mkdir -p /var/www/html/example.com/public_html && \
-	chown -R www-data:www-data /var/www/html/example.com/public_html && \
-	chown www-data:www-data /var/www/html/example.com/public_html && \
-	cd /var/www/html/example.com/public_html && \
-	sudo -u www-data wp core download 
+# Download wordpress
+RUN mkdir -p /usr/src/wordpress && \
+	wp core download --path=/usr/src/wordpress
 
-#Copy in the initialization script
-COPY tools/config-wp.sh /usr/local/bin/init-wp.sh
-RUN chmod +x /usr/local/bin/init-wp.sh
+# Copy in the initialization script
+COPY tools/conf-wp.sh /usr/local/bin/conf-wp.sh
+RUN chmod +x /usr/local/bin/conf-wp.sh
 
-CMD ["init-wp.sh"]
+CMD ["conf-wp.sh"]
