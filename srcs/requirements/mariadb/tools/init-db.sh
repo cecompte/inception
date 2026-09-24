@@ -7,11 +7,16 @@ set -e
 mysqld_safe --skip-networking &
 mysql_pid=$!
 
-#waits until mariadb is ready (server accepts connections)
-until mariadb-admin ping --silent; do
-    sleep 1
-done
+#waits until mariadb accepts connections (up to 30s)
+until mariadb-admin ping \
+    --wait=30 \
+    --silent
+then
+    echo "Failed connection to Mariadb" >&2
+    exit 1
+fi
 
+#creates database and user
 mariadb -u root << EOF
 CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
 CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
@@ -23,4 +28,5 @@ EOF
 mariadb-admin -u root shutdown
 wait "$mysql_pid"
 
+# runs mysqld_safe as PID 1
 exec mysqld_safe

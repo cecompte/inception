@@ -1,13 +1,16 @@
 #!/bin/sh
 set -e
 
+#wait until mariadb accepts connections (up to 30s)
 until mariadb-admin ping \
+    --wait=30 \
+    --silent \
     -h "$WORDPRESS_DB_HOST" \
     -u "$WORDPRESS_DB_USER" \
-    -p"$WORDPRESS_DB_PASSWORD" \
-    --silent
-do
-    sleep 1
+    -p"$WORDPRESS_DB_PASSWORD"
+then
+    echo "Failed connection to Mariadb" >&2
+    exit 1
 done
 
 # make sure wp files exist, if not copy from usr/src/wordpress
