@@ -1,10 +1,10 @@
-#Docker commands
+# Docker commands
 
 docker build -t img-name .
 docker run -d --name container-name img-name
 docker exec -it container-name bash
 
-#mariadb tests
+# mariadb tests
 
 docker build -t mariadb-img .
 docker run -d --name mariadb \
@@ -16,3 +16,9 @@ mariadb-img
 docker exec -it mariadb bash
 mariadb -u root -e "SHOW DATABASES"
 mariadb -u root -e "SELECT User, Host FROM mysql.user;"
+
+
+# Resources 
+wordpress installation using wp-cli : https://www.akamai.com/cloud/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/ 
+
+

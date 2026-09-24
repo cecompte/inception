@@ -1,20 +1,41 @@
 services:
   nginx:
     container_name: nginx
+    volumes:
+      - wp-data:/var/www/html
+    ports:
+      - 8080:80
+    links:
+      - wordpress
   mariadb:
     container_name: mariadb
+    volumes:
+      - db-data:/var/lib/mysql
     restart: unless-stopped
     env_file: .env
     environment:
-      DOMAIN_NAME: ${DOMAIN_NAME=}
+      DOMAIN_NAME: ${DOMAIN_NAME}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       -"3306:3306"
+  wordpress:
+    container_name: wordpress
     volumes:
-      -dbdata:/var/lib/mysql
-
+      - wp-data:/var/www/html
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_TABLE_PREFIX: wp_
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
 
 volumes:
   db-data:
+  wp-data:
