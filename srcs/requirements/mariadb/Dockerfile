@@ -12,12 +12,4 @@ RUN chmod +x /usr/local/bin/init-db.sh
 
 EXPOSE 3306
 
-# LABEL version="1.0"
-# LABEL description="MariaDB Server"
-
-# HEALTHCHECK --start-period=5m \
-#   CMD mariadb -e 'SELECT @@datadir;' || exit 1
-
-ENTRYPOINT ["init-db.sh"]
-
-CMD ["mysqld_safe"]
+CMD ["init-db.sh"]
