@@ -18,7 +18,8 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Download wordpress
 RUN mkdir -p /usr/src/wordpress && \
-	wp core download --path=/usr/src/wordpress
+	chown -R www-data:www-data /usr/src/wordpress && \
+	sudo -u www-data wp core download --path=/usr/src/wordpress
 
 # Copy in the initialization script
 COPY tools/conf-wp.sh /usr/local/bin/conf-wp.sh

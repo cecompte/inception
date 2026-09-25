@@ -8,7 +8,7 @@ until mariadb-admin ping \
     -h "$WORDPRESS_DB_HOST" \
     -u "$WORDPRESS_DB_USER" \
     -p"$WORDPRESS_DB_PASSWORD"
-then
+do
     echo "Failed connection to Mariadb" >&2
     exit 1
 done
