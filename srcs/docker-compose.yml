@@ -44,8 +44,27 @@ services:
 
 volumes:
   db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/cecompte/data/mariadb
   wp-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/cecompte/data/wordpress
 
 networks:
   inception:
     driver: bridge
+
+
+# to do : 
+# - secrets management : https://docs.docker.com/compose/how-tos/use-secrets/
+# - wordpress 2 users
+# - install on VM
+# - Both named volumes must store their data inside /home/login/data 
+# on the host machine. Replace "login" with your learner’s username. No bind mounts.
+# - must create the /home/cecompte/data/mariadb and /home/cecompte/data/wordpress on host machine\
