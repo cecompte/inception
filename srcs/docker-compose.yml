@@ -5,21 +5,22 @@ services:
     volumes:
       - wp-data:/var/www/html
     ports:
-      - "8080:443"
-    links:
-      - wordpress
+      - "443:443"
+    networks:
+      - inception
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
       - db-data:/var/lib/mysql
     restart: unless-stopped
-    env_file: .env
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - inception
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
@@ -28,6 +29,7 @@ services:
     restart: unless-stopped
     environment:
       WORDPRESS_DB_HOST: mariadb
+      DOMAIN_NAME: ${DOMAIN_NAME}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
@@ -37,9 +39,13 @@ services:
       WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
     depends_on:
       - mariadb
-    links:
-      - mariadb
+    networks:
+      - inception
 
 volumes:
   db-data:
   wp-data:
+
+networks:
+  inception:
+    driver: bridge
