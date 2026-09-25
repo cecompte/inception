@@ -11,7 +11,7 @@ mysql_pid=$!
 until mariadb-admin ping \
     --wait=30 \
     --silent
-do
+then
     echo "Failed connection to Mariadb" >&2
     exit 1
 fi
