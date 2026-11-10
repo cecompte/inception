@@ -1,6 +1,37 @@
 #!/bin/sh
 set -e
 
+# load credentials file and parse values
+if [ -z "${CREDENTIALS_FILE:-}" ] || [ ! -r "$CREDENTIALS_FILE" ]; then
+    echo "CREDENTIALS_FILE is missing or unreadable" >&2
+    exit 1
+fi
+
+get_credential() {
+    value=$(awk -F: -v name="$1" \
+        '$1 == name { print $2; exit }' \
+        "$CREDENTIALS_FILE")
+    printf '%s\n' "$value"
+}
+
+WORDPRESS_DB_USER=$(get_credential db_user)
+WORDPRESS_ADMIN_USER=$(get_credential db_root_user)
+WORDPRESS_ADMIN_EMAIL=$(get_credential db_root_email)
+
+# load password files
+if [ -z "${WORDPRESS_DB_PASSWORD_FILE:-}" ] || [ ! -r "$WORDPRESS_DB_PASSWORD_FILE" ]; then
+    echo "WORDPRESS_DB_PASSWORD_FILE is missing or unreadable" >&2
+    exit 1
+fi
+WORDPRESS_DB_PASSWORD=$(cat "$WORDPRESS_DB_PASSWORD_FILE")
+
+if [ -z "${WORDPRESS_ADMIN_PASSWORD_FILE:-}" ] || [ ! -r "$WORDPRESS_ADMIN_PASSWORD_FILE" ]; then
+    echo "WORDPRESS_ADMIN_PASSWORD_FILE is missing or unreadable" >&2
+    exit 1
+fi
+WORDPRESS_ADMIN_PASSWORD=$(cat "$WORDPRESS_ADMIN_PASSWORD_FILE")
+
+
 #wait until mariadb accepts connections (up to 30s)
 until mariadb-admin ping \
     --wait=30 \
