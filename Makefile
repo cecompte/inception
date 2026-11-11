@@ -16,9 +16,9 @@ clean:
 	- docker network rm $(shell docker network ls --filter type=custom -q)
 
 volume:
-	rm -rf ~/data/wordpress
-	rm -rf ~/data/mariadb
-	rm -rf ~/data/
+	sudo rm -rf ~/data/wordpress
+	sudo rm -rf ~/data/mariadb
+	sudo rm -rf ~/data/
 
 fclean: clean volume
 

@@ -5,7 +5,9 @@ services:
     volumes:
       - wp-data:/var/www/html
     ports:
-      - "8080:443"
+      - "443:443"
+    depends_on:
+      - wordpress
     networks:
       - inception
   mariadb:
@@ -76,7 +78,6 @@ secrets:
 
 
 # to do : 
-# - secrets management : https://docs.docker.com/compose/how-tos/use-secrets/
 # - wordpress 2 users
 # - Both named volumes must store their data inside /home/login/data 
 # on the host machine. Replace "login" with your learner’s username. No bind mounts.
