@@ -14,23 +14,14 @@ get_credential() {
     printf '%s\n' "$value"
 }
 
-WORDPRESS_DB_USER=$(get_credential db_user)
-WORDPRESS_ADMIN_USER=$(get_credential db_root_user)
-WORDPRESS_ADMIN_EMAIL=$(get_credential db_root_email)
-
-# load password files
-if [ -z "${WORDPRESS_DB_PASSWORD_FILE:-}" ] || [ ! -r "$WORDPRESS_DB_PASSWORD_FILE" ]; then
-    echo "WORDPRESS_DB_PASSWORD_FILE is missing or unreadable" >&2
-    exit 1
-fi
-WORDPRESS_DB_PASSWORD=$(cat "$WORDPRESS_DB_PASSWORD_FILE")
-
-if [ -z "${WORDPRESS_ADMIN_PASSWORD_FILE:-}" ] || [ ! -r "$WORDPRESS_ADMIN_PASSWORD_FILE" ]; then
-    echo "WORDPRESS_ADMIN_PASSWORD_FILE is missing or unreadable" >&2
-    exit 1
-fi
-WORDPRESS_ADMIN_PASSWORD=$(cat "$WORDPRESS_ADMIN_PASSWORD_FILE")
-
+WORDPRESS_DB_USER=$(get_credential DB_USER)
+WORDPRESS_DB_PASSWORD=$(get_credential DB_PASSWORD)
+WORDPRESS_ADMIN_USER=$(get_credential WP_ROOT)
+WORDPRESS_ADMIN_EMAIL=$(get_credential WP_ROOT_EMAIL)
+WORDPRESS_ADMIN_PASSWORD=$(get_credential WP_ROOT_PASSWORD)
+WORDPRESS_USER=$(get_credential WP_USER)
+WORDPRESS_USER_EMAIL=$(get_credential WP_USER_EMAIL)
+WORDPRESS_USER_PASSWORD=$(get_credential WP_USER_PASSWORD)
 
 #wait until mariadb accepts connections (up to 30s)
 until mariadb-admin ping \
@@ -50,7 +41,7 @@ if [ ! -f /var/www/html/wp-includes/version.php ]; then
     chown -R www-data:www-data /var/www/html
 fi
 
-# create wp-config.php and install wordpress
+# create wp-config.php and install wordpress with 2 users
 if [ ! -f "/var/www/html/wp-config.php" ]; then
 	sudo -u www-data wp core config \
         --path=/var/www/html \
@@ -66,6 +57,10 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
 		--admin_user="$WORDPRESS_ADMIN_USER" \
 		--admin_password="$WORDPRESS_ADMIN_PASSWORD" \
 		--admin_email="$WORDPRESS_ADMIN_EMAIL"
+    sudo -u www-data wp user create "$WORDPRESS_USER" "$WORDPRESS_USER_EMAIL" \
+        --role=subscriber \
+        --user_pass="$WORDPRESS_USER_PASSWORD" \
+        --path=/var/www/html
 fi
 
 exec php-fpm8.2 -F

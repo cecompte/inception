@@ -19,5 +19,5 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 443
 
-# Run nginx in the foreground 
-CMD ["nginx", "-g", "daemon off;"]
+# Wait for WordPress to populate the shared document root before serving requests.
+CMD ["sh", "-c", "until [ -f /var/www/html/index.php ]; do sleep 1; done; exec nginx -g 'daemon off;'"]

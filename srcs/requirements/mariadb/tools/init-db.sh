@@ -16,14 +16,8 @@ get_credential() {
     printf '%s\n' "$value"
 }
 
-MYSQL_USER=$(get_credential db_user)
-
-# load password file
-if [ -z "${MYSQL_PASSWORD_FILE:-}" ] || [ ! -r "$MYSQL_PASSWORD_FILE" ]; then
-    echo "MYSQL_PASSWORD_FILE is missing or unreadable" >&2
-    exit 1
-fi
-MYSQL_PASSWORD=$(cat "$MYSQL_PASSWORD_FILE")
+MYSQL_USER=$(get_credential DB_USER)
+MYSQL_PASSWORD=$(get_credential DB_PASSWORD)
 
 #starts mariadb server in the background (without network connections)
 mysqld_safe --skip-networking &
@@ -33,7 +27,7 @@ mysql_pid=$!
 until mariadb-admin ping \
     --wait=30 \
     --silent
-then
+do
     echo "Failed connection to Mariadb" >&2
     exit 1
 done

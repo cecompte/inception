@@ -6,7 +6,8 @@ all: $(NAME)
 $(NAME):
 	mkdir -p ~/data/wordpress
 	mkdir -p ~/data/mariadb
-	docker compose -f $(YML) up --build -d
+	docker compose -f $(YML) build --no-cache
+	docker compose -f $(YML) up -d --force-recreate
 
 clean:
 	- docker container stop $$(docker container ps -aq)
