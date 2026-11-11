@@ -6,7 +6,7 @@ services:
       - wp-data:/var/www/html
     ports:
       - "443:443"
-    depends_on:
+    depends_on: 
       - wordpress
     networks:
       - inception
@@ -66,8 +66,3 @@ secrets:
   credentials:
     file: ../secrets/credentials.txt
 
-
-# to do : 
-# - wordpress 2 users
-# - Both named volumes must store their data inside /home/login/data 
-# on the host machine. Replace "login" with your learner’s username. No bind mounts.
