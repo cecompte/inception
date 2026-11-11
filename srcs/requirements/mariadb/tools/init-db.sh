@@ -36,7 +36,7 @@ until mariadb-admin ping \
 then
     echo "Failed connection to Mariadb" >&2
     exit 1
-fi
+done
 
 #creates database and user
 mariadb -u root << EOF

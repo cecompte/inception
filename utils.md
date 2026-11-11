@@ -26,4 +26,5 @@ mariadb -u root -e "SELECT User, Host FROM mysql.user;"
 ## wordpress
 - wordpress installation using wp-cli : https://www.akamai.com/cloud/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/ 
 
-
+## secrets management
+- secrets management : https://docs.docker.com/compose/how-tos/use-secrets/
