@@ -71,6 +71,7 @@ Both are mechanisms for data persistence:
 #### Docker networks
 - Docker networking: https://www.sysdig.com/learn-cloud-native/what-is-docker-networking 
 - Networking in compose: https://docs.docker.com/compose/how-tos/networking/ 
+- Bridge vs. host: https://www.stephane-robert.info/docs/conteneurs/moteurs-conteneurs/docker/network/
 
 ### Nginx 
 - config file with ssl/tls: https://oneuptime.com/blog/post/2026-02-20-nginx-ssl-tls-configuration/view
