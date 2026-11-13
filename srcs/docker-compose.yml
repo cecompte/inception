@@ -3,18 +3,19 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     volumes:
-      - wp-data:/var/www/html
+      - wp-data:/var/www/html #makes the storage wp-data available inside the container at /var/www/html
+    restart: unless-stopped #restart if a container stops (ex crash, server reboot, Docker restart)
     ports:
-      - "443:443"
+      - "443:443" #published port to connect to the outside
     depends_on: 
-      - wordpress
+      - wordpress #needs wordpress to serve a PHP page
     networks:
       - inception
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/mysql #volume mount for the container
     restart: unless-stopped
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
@@ -46,7 +47,7 @@ services:
 
 volumes:
   db-data:
-    driver: local
+    driver: local #stores data on the local host
     driver_opts:
       type: none
       o: bind
