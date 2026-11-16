@@ -1,7 +1,10 @@
 services:
   nginx:
     container_name: nginx
-    build: ./requirements/nginx
+    build:
+      context: ./requirements/nginx
+      args:
+        DOMAIN_NAME: ${DOMAIN_NAME}
     volumes:
       - wp-data:/var/www/html #makes the storage wp-data available inside the container at /var/www/html
     restart: unless-stopped #restart if a container stops (ex crash, server reboot, Docker restart)

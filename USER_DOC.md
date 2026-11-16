@@ -69,15 +69,17 @@ Keep this file private and do not commit real production credentials. The databa
 List the container status:
 
 ```sh
-docker compose -f srcs/docker-compose.yml ps
+cd srcs
+docker compose ps
 ```
 
 All three containers (`nginx`, `wordpress`, and `mariadb`) should be running. Check recent output if a service is not healthy or the site does not load:
 
 ```sh
-docker compose -f srcs/docker-compose.yml logs --tail=100 nginx
-docker compose -f srcs/docker-compose.yml logs --tail=100 wordpress
-docker compose -f srcs/docker-compose.yml logs --tail=100 mariadb
+cd srcs
+docker compose logs nginx
+docker compose logs wordpress
+docker compose logs mariadb
 ```
 
 Verify that Nginx is listening on HTTPS:
@@ -91,3 +93,40 @@ A successful response is an HTTP response from Nginx, commonly `200`, `301`, or 
 ## Data safety
 
 Stopping containers does not remove the WordPress files or MariaDB database. Do not use `make clean`, `make volume`, or `make fclean` unless you intend to remove containers, images, networks, and/or persistent data.
+
+## Useful commands
+
+To open a TLS connection and print the handshake details: 
+
+```
+openssl s_client \
+  -connect cecompte.42.fr:443 \
+  -servername cecompte.42.fr
+```
+
+Check networks
+
+```
+docker network ls
+```
+
+Log-in to the database as root
+
+```
+docker compose exec mariadb mariadb -u root
+```
+Log-in to the database as user
+
+```
+docker compose exec mariadb mariadb -u <USERNANME> -p wordpress
+```
+
+Once connected, useful commands include
+
+```
+SHOW DATABASES;
+USE wordpress;
+SHOW TABLES;
+SELECT User, Host FROM mysql.user;
+EXIT;
+```

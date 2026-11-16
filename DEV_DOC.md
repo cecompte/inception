@@ -57,15 +57,17 @@ The three services are:
 Show service status:
 
 ```sh
-docker compose -f srcs/docker-compose.yml ps
+cd srcs
+docker compose ps
 ```
 
 Follow logs for one service or all services:
 
 ```sh
-docker compose -f srcs/docker-compose.yml logs -f nginx
-docker compose -f srcs/docker-compose.yml logs -f wordpress
-docker compose -f srcs/docker-compose.yml logs -f mariadb
+cd srcs
+docker compose logs nginx
+docker compose logs wordpress
+docker compose logs mariadb
 ```
 
 Stop and remove the Compose containers and network while preserving named volume data:
@@ -111,3 +113,6 @@ The Compose file defines two named volumes backed by host directories:
 These directories contain the WordPress files and MariaDB database, respectively. They survive container recreation and `docker compose down`. The Compose file uses the absolute `/home/cecompte/data/...` paths, so the Docker host user/path must match this configuration. If the project is moved to another account or host, update both the host directories created by the Makefile and the `device` paths in `srcs/docker-compose.yml`.
 
 The `credentials` Compose secret is sourced from `secrets/credentials.txt` and mounted at `/run/secrets/credentials` in the MariaDB and WordPress containers. It is not stored in the images.
+
+
+

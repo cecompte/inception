@@ -8,11 +8,14 @@ RUN apt-get update && \
 # Create a directory for the cert/key
 RUN mkdir -p /etc/nginx/certs
 
+ARG DOMAIN_NAME
+
 # Generate a self-signed cert + private key at build time
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/certs/nginx.key \
     -out /etc/nginx/certs/nginx.crt \
-    -subj "/CN=localhost"
+    -addext "subjectAltName=DNS:${DOMAIN_NAME}" \
+    -subj "/CN=${DOMAIN_NAME}"
 
 # Copy custom config over the default
 COPY conf/nginx.conf /etc/nginx/nginx.conf
