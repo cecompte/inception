@@ -9,6 +9,12 @@ $(NAME):
 	docker compose -f $(YML) build --no-cache
 	docker compose -f $(YML) up -d --force-recreate
 
+up:
+	docker compose -f $(YML) up -d
+
+down:
+	docker compose -f $(YML) down
+
 clean:
 	- docker container stop $$(docker container ps -aq)
 	- docker container rm $$(docker container ps -aq)
