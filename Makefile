@@ -10,7 +10,8 @@ $(NAME):
 	docker compose -f $(YML) up -d --force-recreate
 
 up:
-	docker compose -f $(YML) up -d
+	docker compose -f $(YML) build --no-cache
+	docker compose -f $(YML) up -d --force-recreate
 
 down:
 	docker compose -f $(YML) down

@@ -31,4 +31,4 @@ RUN mkdir -p /usr/src/wordpress && \
 
 EXPOSE 9000
 
-CMD ["conf-wp.sh"]
+ENTRYPOINT ["conf-wp.sh"]

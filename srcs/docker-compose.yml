@@ -5,6 +5,7 @@ services:
       context: ./requirements/nginx
       args:
         DOMAIN_NAME: ${DOMAIN_NAME}
+    image: nginx
     volumes:
       - wp-data:/var/www/html #makes the storage wp-data available inside the container at /var/www/html
     restart: unless-stopped #restart if a container stops (ex crash, server reboot, Docker restart)
@@ -17,6 +18,7 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
+    image: mariadb
     volumes:
       - db-data:/var/lib/mysql #volume mount for the container
     restart: unless-stopped
@@ -32,6 +34,7 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress
+    image: wordpress
     volumes:
       - wp-data:/var/www/html
     restart: unless-stopped

@@ -48,7 +48,7 @@ Both are mechanisms for data persistence:
 - Docker named volumes are completely managed by Docker and stored in a part of the host filesystem managed by Docker (/var/lib/docker/volumes). They are independent of the host machine's directory structure and can be shared between containers
 - Bind mounts allow to mount a file or directory from the host machine into a container. It is referenced by its absolute path on the host machine.
 
-**=> In this project**, I needed to use named volumes (db_data and wp_data), and store the data into /home/cecompte/data on the host machine rather than the default Docker location. Directories are created by the Makefile. 
+**=> In this project**, I had to use named volumes (db_data and wp_data), and store the data into /home/cecompte/data on the host machine rather than the default Docker location. Directories are created by the Makefile. 
 
 # Resources
 

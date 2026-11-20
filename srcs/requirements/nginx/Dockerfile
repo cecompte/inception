@@ -23,4 +23,4 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 443
 
 # Wait for WordPress to populate the shared document root before serving requests.
-CMD ["sh", "-c", "until [ -f /var/www/html/index.php ]; do sleep 1; done; exec nginx -g 'daemon off;'"]
+ENTRYPOINT ["sh", "-c", "until [ -f /var/www/html/index.php ]; do sleep 1; done; exec nginx -g 'daemon off;'"]

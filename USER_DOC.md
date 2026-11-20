@@ -96,6 +96,8 @@ Stopping containers does not remove the WordPress files or MariaDB database. Do 
 
 ## Useful commands
 
+### Check TLS connection
+
 To open a TLS connection and print the handshake details: 
 
 ```
@@ -103,12 +105,27 @@ openssl s_client \
   -connect cecompte.42.fr:443 \
   -servername cecompte.42.fr
 ```
+To test that TLS 1.2/1.3 is accepted and TLS1.1 rejected:
 
-Check networks
+```
+openssl s_client -connect localhost:443 -tls1_2
+openssl s_client -connect localhost:443 -tls1_3
+openssl s_client -connect localhost:443 -tls1_1
+```
+
+or
+
+```
+curl -v --tlsv1.2 --tls-max 1.2 https://localhost:443 -k
+```
+
+### Check networks
 
 ```
 docker network ls
 ```
+
+### Log into database
 
 Log-in to the database as root
 
